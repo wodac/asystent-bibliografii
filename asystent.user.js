@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.4.3-a
+// @version      1.4.4-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -87,8 +87,14 @@
                         })
                         unsafeWindow.location.href = originalURL
                     } else {
-                        hasOriginalTitle = originalTitle === unsafeWindow.document.title
-                        console.log(`original title (${originalTitle})?:`, hasOriginalTitle)
+                        const title = unsafeWindow.document.title;
+                        hasOriginalTitle = originalTitle === title
+                        console.log(`original title ("${title}"=="${originalTitle}")?:`, hasOriginalTitle)
+                        if (!hasOriginalTitle) {
+                            originalURL = null
+                            originalTitle = null
+                            GM_saveTab({ originalURL, originalTitle })
+                        }
                     }
                 }
             } 
