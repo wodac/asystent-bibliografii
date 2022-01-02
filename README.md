@@ -6,7 +6,7 @@ Skrypt pozwala na używanie proxy SSL VPN WUM w celu korzystania z medycznych ba
 
 ## Obsługiwane zasoby
 
-Pełna lista zasobów widoczna jest przy tagach @match w [kodzie skryptu](https://github.com/wodac/asystent-bibliografii/blob/main/asystent.user.js).
+Pełna lista zasobów widoczna jest przy tagach `@match` w [kodzie skryptu](https://github.com/wodac/asystent-bibliografii/blob/main/asystent.user.js).
 
 - bmj.com
 - cochranelibrary.com
