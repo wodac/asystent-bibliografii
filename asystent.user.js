@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.5.0-a
+// @version      1.5.2-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -29,7 +29,7 @@
 // @grant        GM_addElement
 // @grant        GM_download
 // @grant        GM_addValueChangeListener
-// @run-at document-ready
+// @run-at document-start
 // ==/UserScript==
 
 (function () {
@@ -42,8 +42,10 @@
 
     const currentURL = unsafeWindow.location.href
 
-    if (currentURL.includes('wum.edu.pl')) sslOpened()
-    else originalSiteOpened()
+    unsafeWindow.document.body.addEventListener('load', function () {
+        if (currentURL.includes('wum.edu.pl')) sslOpened()
+        else originalSiteOpened()
+    })
 
     function originalSiteOpened() {
         console.log('originalSiteOpened')
@@ -113,17 +115,7 @@
             }
 
             if (hasOriginalTitle) {
-                GM_registerMenuCommand("↩️ Wróć do oryginalnego adresu", () => {
-                    GM_saveTab({
-                        originalURL: null,
-                        dontUseAutoProxy: true
-                    });
-                    unsafeWindow.location.href = originalURL;
-                }, 'o');
-                addCitationOptions();
-                GM_registerMenuCommand("📋 Kopiuj oryginalny adres", () => {
-                    GM_setClipboard(originalURL, "text");
-                }, 'a');
+                addProxyOptions(originalURL)
             } else {
                 console.error("Couldn't find article :(")
             }
@@ -133,6 +125,20 @@
             }, 'l');
             setupSettings();
         });
+    }
+
+    function addProxyOptions(originalURL) {
+        GM_registerMenuCommand("↩️ Wróć do oryginalnego adresu", () => {
+            GM_saveTab({
+                originalURL: null,
+                dontUseAutoProxy: true
+            });
+            unsafeWindow.location.href = originalURL;
+        }, 'o');
+        addCitationOptions();
+        GM_registerMenuCommand("📋 Kopiuj oryginalny adres", () => {
+            GM_setClipboard(originalURL, "text");
+        }, 'a');
     }
 })();
 
