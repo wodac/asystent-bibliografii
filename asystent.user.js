@@ -2,7 +2,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.3.1
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @author       Wojciech Odachowski
 // @match        https://doi.org/*
