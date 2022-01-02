@@ -91,7 +91,7 @@ function setupSettings() {
         GM_setValue('autoloadProxy', autoloadProxy)
     })
     GM_registerMenuCommand(
-        "Ustawienia",
+        "⚙️ Ustawienia",
         () => openSettings(settingsContainer),
         's'
     )
