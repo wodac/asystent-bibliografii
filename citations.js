@@ -59,14 +59,14 @@ function addCitationOptions() {
     function getProperCitation(citations) {
         return citations.find(citation => citation.style_shortname === citationFormatChosen).citation
     }
-    GM_registerMenuCommand("Kopiuj jako cytowanie", () => {
+    GM_registerMenuCommand("📜 Kopiuj jako cytowanie", () => {
         getCiteAsMetadata( ({ citations }) => {
             let citation = getProperCitation(citations)
             GM_setClipboard(citation, "html")
             alert(`Skopiowano "${citation}"`)
         } )
     }, 'c')
-    GM_registerMenuCommand("Cytuj wszystkie otwarte karty", () => {
+    GM_registerMenuCommand("🗂️ Cytuj wszystkie otwarte karty", () => {
         GM_getTabs( tabsObject => {
             let tabs = Object.values(tabsObject)
             console.log(tabs)
@@ -81,7 +81,7 @@ function addCitationOptions() {
         })
 
     })
-    GM_registerMenuCommand("Eksportuj cytowanie jako CSV", () => {
+    GM_registerMenuCommand("📄 Eksportuj cytowanie jako CSV", () => {
         getCiteAsMetadata( ({ exports, name }) => {
             let csv = exports[0].export
             GM_download({

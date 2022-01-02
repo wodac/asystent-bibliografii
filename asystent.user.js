@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.3.1-a
+// @version      1.3.2-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/modular/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/modular/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/modular/citations.js
@@ -56,7 +56,7 @@
                 })
                 unsafeWindow.location.href = originalURL
             } else {
-                GM_registerMenuCommand("Wróć do oryginalnego adresu", () => {
+                GM_registerMenuCommand("↩️ Wróć do oryginalnego adresu", () => {
                     GM_saveTab({
                         originalURL: null,
                         dontUseAutoProxy: true
@@ -64,10 +64,10 @@
                     unsafeWindow.location.href = originalURL
                 }, 'o')
                 addCitationOptions()
-                GM_registerMenuCommand("Kopiuj oryginalny adres", () => {
+                GM_registerMenuCommand("📋 Kopiuj oryginalny adres", () => {
                     GM_setClipboard(originalURL, "text")
                 }, 'a')
-                GM_registerMenuCommand("Wyloguj z SSL WUM", () => {
+                GM_registerMenuCommand("🏃 Wyloguj z SSL WUM", () => {
                     unsafeWindow.location.href = LOGOUT_URL
                 }, 'l')
                 setupSettings()
@@ -81,7 +81,7 @@
             if (autoloadProxy && !tabObject.dontUseAutoProxy) saveURLAndUseProxy(currentURL)
             else {
                 GM_registerMenuCommand(
-                    "Otwórz przez SSL WUM",
+                    "📖 Otwórz przez SSL WUM",
                     () => saveURLAndUseProxy(currentURL),
                     'w'
                 )
