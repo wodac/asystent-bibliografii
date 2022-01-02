@@ -18,7 +18,8 @@ function useProxy(url) {
 }
 function saveURLAndUseProxy(url) {
     GM_saveTab({
-        originalURL: url
+        originalURL: url,
+        originalTitle: unsafeWindow.document.title
     })
     useProxy(url)
 }

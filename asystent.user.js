@@ -3,13 +3,12 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.3.3-a
+// @version      1.3.4-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/settings.js
 // @author       Wojciech Odachowski
-// @match        https://doi.org/*
 // @match        http*://*.bmj.com/*
 // @match        http*://*.cochranelibrary.com/*
 // @match        http*://pubmed.ncbi.nlm.nih.gov/*
@@ -36,7 +35,10 @@
 (function() {
     'use strict';
 
-    const LOGOUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/logout.cgi"
+    const WUM_SSL_LOGOUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/logout.cgi"
+    const WUM_SSL_LOGGED_OUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=logout"
+    const WUM_SSL_TIMED_OUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=timed-out"
+    const WUM_SSL_INDEX_URL = "https://ssl.wum.edu.pl/dana/home/index.cgi"
 
     let autoloadProxy = GM_getValue("autoloadProxy")
     autoloadProxy = typeof autoloadProxy === "undefined" ? false : autoloadProxy
@@ -47,52 +49,67 @@
 
     const currentURL = unsafeWindow.location.href
 
-    if (currentURL.includes('https://doi.org/')) {
-        if (unsafeWindow.confirm("Otworzyć używając SSL WUM?")) saveURLAndUseProxy(currentURL)
-    } else if (currentURL.includes('wum.edu.pl')) {
-        GM_getTab( tabObject => {
-            if (!tabObject) return
-            let { originalURL } = tabObject
-            if (!originalURL) return
-            if (currentURL === "https://ssl.wum.edu.pl/dana/home/index.cgi") useProxy(originalURL)
-            else if (currentURL.includes("https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=logout")) {
-                GM_saveTab({
-                    originalURL: null
-                })
-                unsafeWindow.location.href = originalURL
-            } else {
-                GM_registerMenuCommand("↩️ Wróć do oryginalnego adresu", () => {
-                    GM_saveTab({
-                        originalURL: null,
-                        dontUseAutoProxy: true
-                    })
-                    unsafeWindow.location.href = originalURL
-                }, 'o')
-                addCitationOptions()
-                GM_registerMenuCommand("📋 Kopiuj oryginalny adres", () => {
-                    GM_setClipboard(originalURL, "text")
-                }, 'a')
-                GM_registerMenuCommand("🏃 Wyloguj z SSL WUM", () => {
-                    unsafeWindow.location.href = LOGOUT_URL
-                }, 'l')
-                setupSettings()
-            }
-        } )
-    } else {
-        GM_getTab( tabObject => {
+    if (currentURL.includes('wum.edu.pl')) proxyInUse()
+    else originalSiteOpened()
+    
+    function originalSiteOpened() {
+        GM_getTab(tabObject => {
             if (!tabObject) tabObject = {}
             tabObject.originalURL = currentURL
+            tabObject.originalTitle = unsafeWindow.document.title
             GM_saveTab(tabObject)
-            if (autoloadProxy && !tabObject.dontUseAutoProxy) saveURLAndUseProxy(currentURL)
+            if (autoloadProxy && !tabObject.dontUseAutoProxy)
+                saveURLAndUseProxy(currentURL)
             else {
                 GM_registerMenuCommand(
                     "📖 Otwórz przez SSL WUM",
                     () => saveURLAndUseProxy(currentURL),
                     'w'
-                )
-                addCitationOptions()
-                setupSettings()
+                );
+                addCitationOptions();
+                setupSettings();
             }
-        })
+        });
+    }
+
+    function proxyInUse() {
+        GM_getTab(tabObject => {
+            if (!tabObject)
+                return;
+            let { originalURL, originalTitle } = tabObject;
+            if (!originalURL)
+                return
+            if (currentURL === WUM_SSL_INDEX_URL || currentURL === WUM_SSL_TIMED_OUT_URL)
+                useProxy(originalURL)
+            else if (currentURL.includes(WUM_SSL_LOGGED_OUT_URL)) {
+                GM_saveTab({
+                    originalURL: null,
+                    originalTitle: null
+                })
+                unsafeWindow.location.href = originalURL
+            } else {
+                let hasOriginalTitle = originalTitle === unsafeWindow.document.title
+                if (hasOriginalTitle) {
+                    GM_registerMenuCommand("↩️ Wróć do oryginalnego adresu", () => {
+                        GM_saveTab({
+                            originalURL: null,
+                            dontUseAutoProxy: true
+                        });
+                        unsafeWindow.location.href = originalURL;
+                    }, 'o');
+                    addCitationOptions();
+                    GM_registerMenuCommand("📋 Kopiuj oryginalny adres", () => {
+                        GM_setClipboard(originalURL, "text");
+                    }, 'a');
+                } else {
+
+                }
+                GM_registerMenuCommand("🏃 Wyloguj z SSL WUM", () => {
+                    unsafeWindow.location.href = WUM_SSL_LOGOUT_URL;
+                }, 'l');
+                setupSettings();
+            }
+        });
     }
 })();
+

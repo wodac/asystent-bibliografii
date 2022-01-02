@@ -11,7 +11,7 @@ let formatExamples = CITEAS_FORMATS.map(format => {
 }).join('')
 const settingsForm = `
     <h1>Ustawienia asystenta zasobów SSL WUM</h1>
-    <h6>©️ Wojciech Odachowski</h6>
+    <h6>by Wojciech Odachowski</h6>
     <form>
         <div class="custom-script-setting">
             <input type="checkbox" id="custom-script-autoload-proxy">
