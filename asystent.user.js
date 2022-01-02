@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4-a
+// @version      1.5.5-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -49,8 +49,9 @@
     )
     function loadWaiter (callback) {
         let now = Date.now()
-        if (now - lastUpdate > 3000) callback() 
-        else setTimeout(() => loadWaiter(callback), 500)
+        console.log({ now, lastUpdate })
+        if (now - lastUpdate > 5000) callback() 
+        else setTimeout(() => loadWaiter(callback), 1000)
     }
 
     loadWaiter( () => {
