@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.5.3-a
+// @version      1.5.4-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -42,8 +42,21 @@
 
     const currentURL = unsafeWindow.location.href
 
-    if (currentURL.includes('wum.edu.pl')) sslOpened()
-    else originalSiteOpened()
+    let startTimestamp = Date.now()
+    let lastUpdate = startTimestamp 
+    unsafeWindow.document.addEventListener('readystatechange', 
+        (ev) => lastUpdate = ev.timeStamp + startTimestamp
+    )
+    function loadWaiter (callback) {
+        let now = Date.now()
+        if (now - lastUpdate > 3000) callback() 
+        else setTimeout(() => loadWaiter(callback), 500)
+    }
+
+    loadWaiter( () => {
+        if (currentURL.includes('wum.edu.pl')) sslOpened()
+        else originalSiteOpened()
+    } )
 
     function originalSiteOpened() {
         console.log('originalSiteOpened')
@@ -68,6 +81,7 @@
 
     function sslOpened() {
         console.log('sslOpened')
+        unsafeWindow.document.addEventListener('readystatechange', console.log)
         GM_getTab(tabObject => {
             let hasOriginalTitle = false, originalURL = null, originalTitle = null
             if (tabObject) {
