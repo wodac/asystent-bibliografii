@@ -3,11 +3,11 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.3.2-a
-// @updateURL    https://github.com/wodac/asystent-bibliografii/raw/modular/asystent.user.js
-// @require      https://github.com/wodac/asystent-bibliografii/raw/modular/utils.js
-// @require      https://github.com/wodac/asystent-bibliografii/raw/modular/citations.js
-// @require      https://github.com/wodac/asystent-bibliografii/raw/modular/settings.js
+// @version      1.3.3-a
+// @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
+// @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
+// @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
+// @require      https://github.com/wodac/asystent-bibliografii/raw/main/settings.js
 // @author       Wojciech Odachowski
 // @match        https://doi.org/*
 // @match        http*://*.bmj.com/*
@@ -29,6 +29,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addElement
 // @grant        GM_download
+// @grant        GM_addValueChangeListener
 // @run-at document-ready
 // ==/UserScript==
 
@@ -39,6 +40,10 @@
 
     let autoloadProxy = GM_getValue("autoloadProxy")
     autoloadProxy = typeof autoloadProxy === "undefined" ? false : autoloadProxy
+    GM_addValueChangeListener("autoloadProxy", (name, oldValue, newValue) => {
+        console.log({ name, oldValue, newValue })
+        autoloadProxy = newValue
+    })
 
     const currentURL = unsafeWindow.location.href
 

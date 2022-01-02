@@ -34,6 +34,10 @@ const CITEAS_FORMATS = [
 ]
 const CITEAS_ENDPOINT = "https://api.citeas.org/product/"
 let citationFormatChosen = GM_getValue("citationFormat") || "apa"
+GM_addValueChangeListener("citationFormat", (name, oldValue, newValue) => {
+    console.log({ name, oldValue, newValue })
+    citationFormatChosen = newValue
+})
 
 async function getCiteAsMetadataFromTabAsync(tabObject) {
     if (!tabObject) return
