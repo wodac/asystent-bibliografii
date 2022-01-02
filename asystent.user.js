@@ -3,11 +3,11 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.3.1
-// @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
-// @require      [!!TO DO!!]  utils.js
-// @require      [!!TO DO!!]  citations.js
-// @require      [!!TO DO!!]  settings.js
+// @version      1.3.1-a
+// @updateURL    https://github.com/wodac/asystent-bibliografii/raw/modular/asystent.user.js
+// @require      https://github.com/wodac/asystent-bibliografii/raw/modular/utils.js
+// @require      https://github.com/wodac/asystent-bibliografii/raw/modular/citations.js
+// @require      https://github.com/wodac/asystent-bibliografii/raw/modular/settings.js
 // @author       Wojciech Odachowski
 // @match        https://doi.org/*
 // @match        http*://*.bmj.com/*
