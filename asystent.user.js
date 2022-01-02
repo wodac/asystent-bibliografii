@@ -1,7 +1,7 @@
 // ==UserScript==
 // @ts-check
 // @name         Asystent zasobów SSL WUM
-// @description  Asystent zasobów SSL WUM
+// @description  Pozwala na używanie proxy SSL VPN WUM w celu korzystania z medycznych baz danych, do których dostęp zapewnia WUM
 // @namespace    http://tampermonkey.net/
 // @version      1.6.0-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
