@@ -18,6 +18,10 @@ const settingsForm = `
             <label class="custom-script-autoload-proxy" for="custom-script-autoload-proxy">Automatycznie używaj proxy</label>
         </div>
         <div class="custom-script-setting">
+            <input type="checkbox" id="custom-script-use-doi-finder">
+            <label class="custom-script-use-doi-finder" for="custom-script-use-doi-finder">Wyszukuj artykuły po metadanych DOI</label>
+        </div>
+        <div class="custom-script-setting">
             <label class="custom-script-citation-format" for="custom-script-citation-format">Format cytowania: </label>
             <select id="custom-script-citation-format">
                 ${formatOptions}
@@ -68,9 +72,9 @@ function setupSettings() {
     unsafeWindow.document.body.append(settingsContainer)
     let citationFormatChooser = settingsContainer.querySelector('#custom-script-citation-format')
     let citationFormatExamples = settingsContainer.querySelectorAll('.custom-script-citation-format-example')
-    citationFormatChooser.value = citationFormatChosen
+    citationFormatChooser.value = GM_getValue("citationFormat", "apa")
     function showProperCitationExample() {
-        citationFormatChosen = citationFormatChooser.value
+        let citationFormatChosen = citationFormatChooser.value
         console.log({ citationFormatChosen })
         GM_setValue("citationFormat", citationFormatChosen)
         citationFormatExamples.forEach(example => {
@@ -81,18 +85,29 @@ function setupSettings() {
     citationFormatChooser.addEventListener('change', showProperCitationExample)
     showProperCitationExample()
 
-    /**
-     * @type {HTMLInputElement}
-     */
-    let autoloadProxyCheckbox = settingsContainer.querySelector('#custom-script-autoload-proxy')
-    autoloadProxyCheckbox.checked = GM_getValue('autoloadProxy')
-    autoloadProxyCheckbox.addEventListener('change', () => {
-        let autoloadProxy = autoloadProxyCheckbox.checked
-        GM_setValue('autoloadProxy', autoloadProxy)
-    })
+    setupCheckbox(settingsContainer, 'autoloadProxy', '#custom-script-autoload-proxy')
+    setupCheckbox(settingsContainer, 'useDoiFinder', '#custom-script-use-doi-finder')
     GM_registerMenuCommand(
         "⚙️ Ustawienia",
         () => openSettings(settingsContainer),
         's'
     )
+}
+
+/**
+ * 
+ * @param {HTMLElement} settingsContainer 
+ * @param {ValueName} name 
+ * @param {string} selector 
+ */
+function setupCheckbox(settingsContainer, name, selector) {    
+    /**
+     * @type {HTMLInputElement}
+     */
+    let checkbox = settingsContainer.querySelector(selector)
+    checkbox.checked = GM_getValue(name)
+    checkbox.addEventListener('change', () => {
+        let value = checkbox.checked
+        GM_setValue(name, value)
+    })
 }

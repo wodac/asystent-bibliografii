@@ -23,3 +23,11 @@ function saveURLAndUseProxy(url) {
     })
     useProxy(url)
 }
+function doiURLFinder() {
+    const head = unsafeWindow.document.head;
+    /**
+     * @type {HTMLMetaElement}
+     */
+    const doiMetaTag = head.querySelector("meta[name*='doi']");
+    return `https://doi.org/${doiMetaTag.content}`
+}

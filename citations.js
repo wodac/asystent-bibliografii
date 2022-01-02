@@ -33,11 +33,6 @@ const CITEAS_FORMATS = [
     }
 ]
 const CITEAS_ENDPOINT = "https://api.citeas.org/product/"
-let citationFormatChosen = GM_getValue("citationFormat") || "apa"
-GM_addValueChangeListener("citationFormat", (name, oldValue, newValue) => {
-    console.log({ name, oldValue, newValue })
-    citationFormatChosen = newValue
-})
 
 async function getCiteAsMetadataFromTabAsync(tabObject) {
     if (!tabObject) return
@@ -61,7 +56,7 @@ function getCiteAsMetadata(callback) {
 }
 function addCitationOptions() {
     function getProperCitation(citations) {
-        return citations.find(citation => citation.style_shortname === citationFormatChosen).citation
+        return citations.find(citation => citation.style_shortname === GM_getValue("citationFormat", "apa")).citation
     }
     GM_registerMenuCommand("📜 Kopiuj jako cytowanie", () => {
         getCiteAsMetadata( ({ citations }) => {
