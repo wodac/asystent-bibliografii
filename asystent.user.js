@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Asystent zasobów SSL WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.5.5-a
+// @version      1.5.6-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -34,6 +34,10 @@
 
 (function () {
     'use strict';
+    if (unsafeWindow.top != unsafeWindow.self) {
+        console.log('in iframe...')
+        return
+    }
 
     const WUM_SSL_LOGOUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/logout.cgi"
     const WUM_SSL_LOGGED_OUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=logout"
