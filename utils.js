@@ -28,6 +28,7 @@ function doiURLFinder() {
     /**
      * @type {HTMLMetaElement}
      */
-    const doiMetaTag = head.querySelector("meta[name*='doi']");
+    const doiMetaTag = head.querySelector("meta[name*='doi']")
+    if (!doiMetaTag) throw Error("Couldn't find <meta> tag with doi info :(")
     return `https://doi.org/${doiMetaTag.content}`
 }

@@ -46,6 +46,7 @@
     else originalSiteOpened()
 
     function originalSiteOpened() {
+        console.log('originalSiteOpened')
         GM_getTab(tabObject => {
             if (!tabObject) tabObject = {}
             tabObject.originalURL = currentURL
@@ -66,15 +67,20 @@
     }
 
     function sslOpened() {
+        console.log('sslOpened')
         GM_getTab(tabObject => {
             let hasOriginalTitle = false, originalURL = null, originalTitle = null
             if (tabObject) {
+                console.log('tabObject present', {tabObject})                
                 originalURL = tabObject.originalURL
                 originalTitle = tabObject.originalTitle
                 if (originalURL) {
-                    if (currentURL === WUM_SSL_INDEX_URL || currentURL === WUM_SSL_TIMED_OUT_URL)
+                    console.log('originalURL present', {originalURL})    
+                    if (currentURL === WUM_SSL_INDEX_URL || currentURL === WUM_SSL_TIMED_OUT_URL) {
+                        console.log('proxy reload')
                         useProxy(originalURL)
-                    else if (currentURL.includes(WUM_SSL_LOGGED_OUT_URL)) {
+                    } else if (currentURL.includes(WUM_SSL_LOGGED_OUT_URL)) {
+                        console.log('user logged out')
                         GM_saveTab({
                             originalURL: null,
                             originalTitle: null
@@ -82,13 +88,22 @@
                         unsafeWindow.location.href = originalURL
                     } else {
                         hasOriginalTitle = originalTitle === unsafeWindow.document.title
+                        console.log(`original title (${originalTitle})?:`, hasOriginalTitle)
                     }
                 }
-            } else if (GM_getValue("useDoiFinder", false)) {
-                originalURL = doiURLFinder()
-                originalTitle = unsafeWindow.document.title
-                GM_saveTab({ originalTitle, originalURL })
-                hasOriginalTitle = true
+            } 
+            
+            if (!hasOriginalTitle && GM_getValue("useDoiFinder", false)) {
+                console.log('trying to use doi finder...')
+                try {
+                    originalURL = doiURLFinder()
+                    console.log(`doi found!`, originalURL)
+                    originalTitle = unsafeWindow.document.title
+                    GM_saveTab({ originalTitle, originalURL })
+                    hasOriginalTitle = true
+                } catch (err) {
+                    console.error(err)
+                }
             }
 
             if (hasOriginalTitle) {
@@ -104,7 +119,7 @@
                     GM_setClipboard(originalURL, "text");
                 }, 'a');
             } else {
-
+                console.error("Couldn't find article :(")
             }
 
             GM_registerMenuCommand("🏃 Wyloguj z SSL WUM", () => {
