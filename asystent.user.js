@@ -6,7 +6,6 @@
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @author       Wojciech Odachowski
 // @match        https://doi.org/*
-// @match        data:text/html,*
 // @match        http*://*.bmj.com/*
 // @match        http*://*.cochranelibrary.com/*
 // @match        http*://pubmed.ncbi.nlm.nih.gov/*
@@ -270,11 +269,6 @@
                 GM_registerMenuCommand("Kopiuj oryginalny adres", () => {
                     GM_setClipboard(originalURL, "text")
                 }, 'a')
-                // GM_registerMenuCommand("Udostępnij oryginalny adres", () => {
-                //     unsafeWindow.navigator.share({
-                //         url: originalURL
-                //     })
-                // })
                 GM_registerMenuCommand("Wyloguj z SSL WUM", () => {
                     unsafeWindow.location.href = LOGOUT_URL
                 }, 'l')
