@@ -19,7 +19,7 @@ const settingsForm = `
         </div>
         <div class="custom-script-setting">
             <input type="checkbox" id="custom-script-use-doi-finder">
-            <label class="custom-script-use-doi-finder" for="custom-script-use-doi-finder">Wyszukuj artykuły po metadanych DOI</label>
+            <label class="custom-script-use-doi-finder" for="custom-script-use-doi-finder">Wyszukuj artykuły po metadanych</label>
         </div>
         <div class="custom-script-setting">
             <label class="custom-script-citation-format" for="custom-script-citation-format">Format cytowania: </label>
@@ -86,7 +86,7 @@ function setupSettings() {
     showProperCitationExample()
 
     setupCheckbox(settingsContainer, 'autoloadProxy', '#custom-script-autoload-proxy')
-    setupCheckbox(settingsContainer, 'useDoiFinder', '#custom-script-use-doi-finder')
+    setupCheckbox(settingsContainer, 'useURLFinder', '#custom-script-use-doi-finder')
     GM_registerMenuCommand(
         "⚙️ Ustawienia",
         () => openSettings(settingsContainer),

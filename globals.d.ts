@@ -18,7 +18,7 @@ interface TabObject {
     dontUseAutoProxy?: boolean,
     [key: string]: any
 }
-type ValueName = 'useDoiFinder' | 'citationFormat' | 'autoloadProxy' 
+type ValueName = 'useURLFinder' | 'citationFormat' | 'autoloadProxy' 
 type ValueChangedListener = (name: string, old_value: any, new_value: any, remote: boolean) => any
 declare let unsafeWindow: Window
 declare let GM_getValue: (name: ValueName, defaultValue?: any) => any

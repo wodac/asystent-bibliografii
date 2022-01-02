@@ -23,8 +23,14 @@ function saveURLAndUseProxy(url) {
     })
     useProxy(url)
 }
-function doiURLFinder() {
-    const head = unsafeWindow.document.head;
+function URLFinder() {
+    const head = unsafeWindow.document.head;    
+    /**
+     * @type {HTMLMetaElement}
+     */
+    const urlMetaTag = head.querySelector("meta[name*='og-url']")
+    console.log({ urlMetaTag })
+    if (urlMetaTag) return urlMetaTag.content
     /**
      * @type {HTMLMetaElement}
      */
