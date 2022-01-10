@@ -97,7 +97,7 @@ function setupSettings() {
 /**
  * 
  * @param {HTMLElement} settingsContainer 
- * @param {ValueName} name 
+ * @param {BooleanValueName} name 
  * @param {string} selector 
  */
 function setupCheckbox(settingsContainer, name, selector) {    
