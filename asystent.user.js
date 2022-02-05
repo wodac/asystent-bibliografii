@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Pozwala na używanie proxy SSL VPN WUM w celu korzystania z medycznych baz danych, do których dostęp zapewnia WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.6.2-a
+// @version      1.6.3-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -85,7 +85,7 @@
                 originalTitle = tabObject.originalTitle
                 if (originalURL) {
                     console.log('originalURL present', {originalURL})    
-                    if (currentURL === WUM_SSL_INDEX_URL || currentURL === WUM_SSL_TIMED_OUT_URL) {
+                    if (currentURL.includes(WUM_SSL_INDEX_URL) || currentURL === WUM_SSL_TIMED_OUT_URL) {
                         console.log('proxy reload')
                         useProxy(originalURL)
                     } else if (currentURL.includes(WUM_SSL_LOGGED_OUT_URL)) {
