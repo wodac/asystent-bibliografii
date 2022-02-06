@@ -3,7 +3,7 @@
 // @name         Asystent zasobów SSL WUM
 // @description  Pozwala na używanie proxy SSL VPN WUM w celu korzystania z medycznych baz danych, do których dostęp zapewnia WUM
 // @namespace    http://tampermonkey.net/
-// @version      1.6.4-a
+// @version      1.7.0-a
 // @updateURL    https://github.com/wodac/asystent-bibliografii/raw/main/asystent.user.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/utils.js
 // @require      https://github.com/wodac/asystent-bibliografii/raw/main/citations.js
@@ -46,6 +46,7 @@
     const WUM_SSL_LOGOUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/logout.cgi"
     const WUM_SSL_LOGGED_OUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=logout"
     const WUM_SSL_TIMED_OUT_URL = "https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=timed-out"
+    const WUM_SSL_FORCED_OFF_URL = "https://ssl.wum.edu.pl/dana-na/auth/url_default/welcome.cgi?p=forced-off"
     const WUM_SSL_INDEX_URL = "https://ssl.wum.edu.pl/dana/home/index.cgi"
 
     const currentURL = unsafeWindow.location.href
@@ -85,7 +86,11 @@
                 originalTitle = tabObject.originalTitle
                 if (originalURL) {
                     console.log('originalURL present', {originalURL})    
-                    if (currentURL.includes(WUM_SSL_INDEX_URL) || currentURL === WUM_SSL_TIMED_OUT_URL) {
+                    if (
+                        currentURL.includes(WUM_SSL_INDEX_URL) || 
+                        currentURL === WUM_SSL_TIMED_OUT_URL ||
+                        currentURL === WUM_SSL_FORCED_OFF_URL
+                        ) {
                         console.log('proxy reload')
                         useProxy(originalURL)
                     } else if (currentURL.includes(WUM_SSL_LOGGED_OUT_URL)) {
